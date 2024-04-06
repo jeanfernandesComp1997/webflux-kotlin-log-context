@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: logging-context-sample
+
+client:
+  base-url: https://rickandmortyapi.com/api
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},traceId=%X{traceId:-},spanId=%X{spanId:-}]"
