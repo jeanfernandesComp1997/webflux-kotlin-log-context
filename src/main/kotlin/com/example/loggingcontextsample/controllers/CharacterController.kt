@@ -21,14 +21,12 @@ class CharacterController(
     @GetMapping("{id}")
     suspend fun retrieveCharacterById(@PathVariable id: String): ResponseEntity<Any> {
         logger.info("Request received, search character id: $id")
-
         return ResponseEntity.ok(characterService.retrieveCharacter(id))
     }
 
-//    @GetMapping("{id}")
-//     fun retrieveCharacterById(@PathVariable id: String): Mono<Any> {
-//        logger.info("Request received, search character id: $id")
-//
-//        return characterService.retrieveCharacter(id)
-//    }
+    @GetMapping("{id}/webflux")
+    fun retrieveCharacterByIdWithWebFlux(@PathVariable id: String): Mono<Any> {
+        logger.info("Request received, search character id with webflux: $id")
+        return characterService.retrieveCharacterWebFlux(id)
+    }
 }
