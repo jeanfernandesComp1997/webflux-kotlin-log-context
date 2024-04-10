@@ -1,6 +1,8 @@
 package com.example.loggingcontextsample.controllers
 
+import com.example.loggingcontextsample.dto.ResponseBody
 import com.example.loggingcontextsample.services.CharacterService
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
@@ -19,14 +21,20 @@ class CharacterController(
     val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     @GetMapping("{id}")
-    suspend fun retrieveCharacterById(@PathVariable id: String): ResponseEntity<Any> {
+    suspend fun retrieveCharacterById(@PathVariable id: String): ResponseEntity<ResponseBody> {
         logger.info("Request received, search character id: $id")
-        return ResponseEntity.ok(characterService.retrieveCharacter(id))
+        val character = characterService.retrieveCharacter(id)
+
+        val userKey = retrieveUserKey()
+
+        logger.info("Building response")
+        return ResponseEntity.ok(ResponseBody(userId = userKey, data = character))
     }
 
-    @GetMapping("{id}/webflux")
-    fun retrieveCharacterByIdWithWebFlux(@PathVariable id: String): Mono<Any> {
-        logger.info("Request received, search character id with webflux: $id")
-        return characterService.retrieveCharacterWebFlux(id)
+    private suspend fun retrieveUserKey(): String? {
+        return Mono.deferContextual { context ->
+            val key = context.getOrEmpty<List<String>>("userKey")
+            Mono.just(if (key.get() is List) key.get()[0] else "")
+        }.awaitSingleOrNull()
     }
 }

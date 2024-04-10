@@ -56,16 +56,4 @@ class CharacterService(
             .subscribeOn(Schedulers.boundedElastic())
             .block()
     }
-
-    fun retrieveCharacterWebFlux(id: String): Mono<Any> {
-        logger.info("Requesting character with webflux on: '/character/$id'")
-
-        return client
-            .get()
-            .uri("/character/{id}", id)
-            .retrieve()
-            .bodyToMono<Any>()
-            .doOnSuccess { logger.info("Character response with webflux: $it") }
-            .subscribeOn(Schedulers.boundedElastic())
-    }
 }

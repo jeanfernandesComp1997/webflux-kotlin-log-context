@@ -1,7 +1,8 @@
 spring:
   application:
     name: logging-context-sample
-
+  reactor:
+    context-propagation: auto
 client:
   base-url: https://rickandmortyapi.com/api
 
