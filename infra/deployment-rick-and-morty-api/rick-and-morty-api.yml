@@ -30,9 +30,9 @@ spec:
               cpu: "500m"
               memory: 600Mi
           volumeMounts:
-            - name: wiremock-volume
+            - name: wiremock-data-volume
               mountPath: /wiremock/__files
-            - name: wiremock-volume
+            - name: wiremock-data-volume
               mountPath: /wiremock/mappings
 
 ---
