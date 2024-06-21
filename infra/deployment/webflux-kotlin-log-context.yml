@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webflux-kotlin-log-context
+  labels:
+    app: webflux-kotlin-log-context
+spec:
+  selector:
+    matchLabels:
+      app: webflux-kotlin-log-context
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: webflux-kotlin-log-context
+    spec:
+      containers:
+        - name: backend
+          image: jeanfernandes1997/webflux-kotlin-log-context:latest
+          ports:
+            - containerPort: 8080
+              name: ws-port
+          resources:
+            requests:
+              cpu: "250m"
+              memory: 300Mi
+            limits:
+              cpu: "500m"
+              memory: 600Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webflux-kotlin-log-context
+  labels:
+    app: webflux-kotlin-log-context
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: ws-port
+  selector:
+    app: webflux-kotlin-log-context
