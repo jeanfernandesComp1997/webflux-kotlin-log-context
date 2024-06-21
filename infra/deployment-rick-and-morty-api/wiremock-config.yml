@@ -5,6 +5,8 @@ metadata:
 data:
     get-character.json: |
       {
+        "id" : "da5735a6-b6cc-45aa-8256-fb88b5670610",
+        "uuid" : "da5735a6-b6cc-45aa-8256-fb88b5670610",
         "request": {
           "method": "GET",
           "url": "/api/character/^(.*)"
