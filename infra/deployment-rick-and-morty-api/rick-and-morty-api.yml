@@ -13,6 +13,10 @@ spec:
       labels:
         app: rick-and-morty-api
     spec:
+      volumes:
+        - name: wiremock-data-volume
+          configMap:
+            name: wiremock-data
       containers:
         - name: backend
           image: wiremock/wiremock:3.7.0
@@ -26,14 +30,10 @@ spec:
               cpu: "500m"
               memory: 600Mi
           volumeMounts:
-            - name: wiremock-data
+            - name: wiremock-volume
               mountPath: /wiremock/__files
-            - name: wiremock-data
+            - name: wiremock-volume
               mountPath: /wiremock/mappings
-      volumes:
-        - name: wiremock-data
-          configMap:
-            name: wiremock-data
 
 ---
 apiVersion: v1

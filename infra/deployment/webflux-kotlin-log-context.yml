@@ -65,5 +65,5 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: webflux-kotlin-log-context
-  minReplicas: 1
+  minReplicas: 3
   maxReplicas: 10
