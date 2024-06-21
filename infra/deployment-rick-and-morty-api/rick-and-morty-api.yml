@@ -31,9 +31,10 @@ spec:
               memory: 600Mi
           volumeMounts:
             - name: wiremock-data-volume
-              mountPath: /wiremock/__files
-            - name: wiremock-data-volume
-              mountPath: /wiremock/mappings
+              mountPath: /var/wiremock/mappings
+          args:
+            - "--root-dir"
+            - "/var/wiremock/mappings"
 
 ---
 apiVersion: v1
