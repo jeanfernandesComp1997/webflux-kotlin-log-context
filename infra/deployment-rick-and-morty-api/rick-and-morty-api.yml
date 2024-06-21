@@ -1,3 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wiremock-data
+data:
+  __files/:
+  mappings/:
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,15 +43,6 @@ spec:
         - name: wiremock-data
           configMap:
             name: wiremock-data
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: wiremock-data
-data:
-  __files/:
-  mappings/:
 
 ---
 apiVersion: v1
