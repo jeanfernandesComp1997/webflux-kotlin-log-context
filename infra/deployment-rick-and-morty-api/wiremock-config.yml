@@ -5,39 +5,43 @@ metadata:
 data:
     get-character.json: |
       {
-        "id" : "da5735a6-b6cc-45aa-8256-fb88b5670610",
-        "uuid" : "da5735a6-b6cc-45aa-8256-fb88b5670610",
-        "request": {
-          "method": "GET",
-          "url": "/api/character/^(.*)"
-        },
-        "response": {
-          "status": 200,
-          "body": {
-            "id": 2,
-            "name": "Morty Smith",
-            "status": "Alive",
-            "species": "Human",
-            "type": "",
-            "gender": "Male",
-            "origin": {
-              "name": "Earth",
-              "url": "https://rickandmortyapi.com/api/location/1"
+        "mappings": [
+          {
+            "id": "da5735a6-b6cc-45aa-8256-fb88b5670610",
+            "uuid": "da5735a6-b6cc-45aa-8256-fb88b5670610",
+            "request": {
+              "method": "GET",
+              "url": "/api/character/^(.*)"
             },
-            "location": {
-              "name": "Earth",
-              "url": "https://rickandmortyapi.com/api/location/20"
-            },
-            "image": "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-            "episode": [
-              "https://rickandmortyapi.com/api/episode/1",
-              "https://rickandmortyapi.com/api/episode/2"
-            ],
-            "url": "https://rickandmortyapi.com/api/character/2",
-            "created": "2017-11-04T18:50:21.651Z"
-          },
-          "headers": {
-            "Content-Type": "application/json"
+            "response": {
+              "status": 200,
+              "body": {
+                "id": 2,
+                "name": "Morty Smith",
+                "status": "Alive",
+                "species": "Human",
+                "type": "",
+                "gender": "Male",
+                "origin": {
+                  "name": "Earth",
+                  "url": "https://rickandmortyapi.com/api/location/1"
+                },
+                "location": {
+                  "name": "Earth",
+                  "url": "https://rickandmortyapi.com/api/location/20"
+                },
+                "image": "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                "episode": [
+                  "https://rickandmortyapi.com/api/episode/1",
+                  "https://rickandmortyapi.com/api/episode/2"
+                ],
+                "url": "https://rickandmortyapi.com/api/character/2",
+                "created": "2017-11-04T18:50:21.651Z"
+              },
+              "headers": {
+                "Content-Type": "application/json"
+              }
+            }
           }
-        }
+        ]
       }
