@@ -36,7 +36,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8080
+    - name: http-traffic
+      port: 8080
       targetPort: ws-port
   selector:
     app: webflux-kotlin-log-context
@@ -51,7 +52,7 @@ spec:
     matchLabels:
       app: webflux-kotlin-log-context
   endpoints:
-    - port: 8080
+    - port: http-traffic
       path: "/actuator/prometheus"
 
 ---
