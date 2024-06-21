@@ -8,7 +8,6 @@ spec:
   selector:
     matchLabels:
       app: webflux-kotlin-log-context
-  replicas: 2
   template:
     metadata:
       labels:
@@ -41,3 +40,29 @@ spec:
       targetPort: ws-port
   selector:
     app: webflux-kotlin-log-context
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: spring-boot-app-service-monitor
+spec:
+  selector:
+    matchLabels:
+      app: webflux-kotlin-log-context
+  endpoints:
+    - port: 8080
+      path: "/actuator/prometheus"
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: webflux-kotlin-log-context
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: webflux-kotlin-log-context
+  minReplicas: 1
+  maxReplicas: 10
