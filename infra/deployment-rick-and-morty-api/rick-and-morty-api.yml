@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rick-and-morty-api
+  labels:
+    app: rick-and-morty-api
+spec:
+  selector:
+    matchLabels:
+      app: rick-and-morty-api
+  template:
+    metadata:
+      labels:
+        app: rick-and-morty-api
+    spec:
+      containers:
+        - name: backend
+          image: wiremock/wiremock:3.7.0
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "250m"
+              memory: 300Mi
+            limits:
+              cpu: "500m"
+              memory: 600Mi
+          volumeMounts:
+            - name: wiremock-data
+              mountPath: /wiremock/__files
+            - name: wiremock-data
+              mountPath: /wiremock/mappings
+      volumes:
+        - name: wiremock-data
+          configMap:
+            name: wiremock-data
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wiremock-data
+data:
+  __files/:
+  mappings/:
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rick-and-morty-api
+  labels:
+    app: rick-and-morty-api
+spec:
+  type: NodePort
+  ports:
+    - name: http-traffic
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: rick-and-morty-api
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: rick-and-morty-api
+spec:
+  selector:
+    matchLabels:
+      app: rick-and-morty-api
+  endpoints:
+    - port: http-traffic
+      path: "/actuator/prometheus"
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: rick-and-morty-api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: rick-and-morty-api
+  minReplicas: 1
+  maxReplicas: 10
