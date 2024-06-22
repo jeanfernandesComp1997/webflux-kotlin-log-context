@@ -15,6 +15,7 @@ class ControllerExceptionHandler {
     @ExceptionHandler(Exception::class)
     fun handleException(exception: Exception): ResponseEntity<Any> {
         logger.info("Handling exception in thread: ${Thread.currentThread().name}")
+        logger.error(exception.message, exception.stackTrace.toString())
         return ResponseEntity
             .internalServerError()
             .body(object {

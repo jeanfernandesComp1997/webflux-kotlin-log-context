@@ -35,6 +35,6 @@ export const options = {
 //};
 
 export default function () {
-let res = http.get('http://webflux-kotlin-log-context.example/characters/7');
+let res = http.get('http://webflux-kotlin-log-context.example/characters/7/virtual-threads');
 check(res, { 'status was 200': (r) => r.status == 200 });
 }

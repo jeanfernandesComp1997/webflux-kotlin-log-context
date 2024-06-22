@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
-import java.util.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("characters")
@@ -21,13 +21,11 @@ class CharacterController(
 
     val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    @GetMapping("{id}")
-    suspend fun retrieveCharacterById(@PathVariable id: String): ResponseEntity<ResponseBody> {
+    @GetMapping("{id}/bounded-elastic-web-client")
+    suspend fun retrieveCharacterByIdBoundedElasticWebClient(@PathVariable id: String): ResponseEntity<ResponseBody> {
         logger.info("Request received, search character id: $id")
         val character = characterService.retrieveCharacter(id)
-
         val userKey = retrieveUserKey()
-
         logger.info("Building response")
         return ResponseEntity.ok(ResponseBody(userId = userKey, data = character))
     }
@@ -49,10 +47,18 @@ class CharacterController(
     }
 
     @GetMapping("{id}/blocking")
-    suspend fun retrieveCharacterByIdBlocking(@PathVariable id: String): ResponseEntity<ResponseBody> {
+    fun retrieveCharacterByIdBlocking(@PathVariable id: String): ResponseEntity<ResponseBody> {
         logger.info("Blocking request received, search character id: $id")
         val character = characterService.retrieveCharacterBlocking(id)
         logger.info("Blocking Threads response")
+        return ResponseEntity.ok(ResponseBody(userId = UUID.randomUUID().toString(), data = character ?: ""))
+    }
+
+    @GetMapping("{id}/bounded-elastic-rest-template")
+    suspend fun retrieveCharacterByIdBoundedElastic(@PathVariable id: String): ResponseEntity<ResponseBody> {
+        logger.info("BoundedElastic request received, search character id: $id")
+        val character = characterService.retrieveCharacterBoundedElastic(id)
+        logger.info("BoundedElastic Threads response")
         return ResponseEntity.ok(ResponseBody(userId = UUID.randomUUID().toString(), data = character ?: ""))
     }
 

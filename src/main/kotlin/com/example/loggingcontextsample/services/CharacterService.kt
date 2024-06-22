@@ -2,8 +2,7 @@ package com.example.loggingcontextsample.services
 
 import com.example.loggingcontextsample.utils.VT
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import kotlinx.coroutines.withContext
 import org.slf4j.Logger
@@ -15,7 +14,6 @@ import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.reactive.function.client.bodyToMono
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
-import kotlin.math.log
 
 @Service
 class CharacterService(
@@ -24,25 +22,15 @@ class CharacterService(
 ) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    suspend fun retrieveCharacter(id: String): Any = coroutineScope {
-        val character = async {
-            logger.info("Requesting character on: '/character/$id'")
-            Mono.fromCallable {
-                callBlocking(id)
-            }
-                .subscribeOn(Schedulers.boundedElastic())
-                .awaitSingleOrNull()
+    suspend fun retrieveCharacter(id: String): Any {
+        logger.info("Requesting character on: '/character/$id'")
+        val character = Mono.fromCallable {
+            callBlocking(id)
         }
-
-        val character2 = async {
-            logger.info("Requesting character2 on: '/character/$id'")
-            callApi(id)
-        }
-
-        logger.info("Character response: ${character.await()}")
-        logger.info("Character2 response: ${character2.await()}")
-
-        return@coroutineScope character.await() ?: Any()
+            .subscribeOn(Schedulers.boundedElastic())
+            .awaitSingleOrNull()
+        logger.info("Character response: $character")
+        return character ?: Any()
     }
 
     suspend fun retrieveCharacterSuspend(id: String): Any {
@@ -58,12 +46,27 @@ class CharacterService(
         return callBlockingVanilla(id)
     }
 
+    suspend fun retrieveCharacterBoundedElastic(id: String): Any {
+        logger.info("Bounded elastic requesting character on: '/character/$id'")
+        val character = callBlockingRestTemplateBoundedElastic(id)
+        logger.info("Bounded elastic character response: $character")
+        return character
+    }
+
     private suspend fun callApi(id: String): Any {
         return client
             .get()
             .uri("/character/{id}", id)
             .retrieve()
             .awaitBody()
+    }
+
+    private suspend fun callBlockingRestTemplateBoundedElastic(id: String): Any {
+        return Mono.fromCallable {
+            callBlockingRestTemplate(id)
+        }
+            .subscribeOn(Schedulers.boundedElastic())
+            .awaitSingle()
     }
 
     private fun callBlockingRestTemplate(id: String): Any {
@@ -77,7 +80,6 @@ class CharacterService(
             .uri("/character/{id}", id)
             .retrieve()
             .bodyToMono<Any>()
-            .subscribeOn(Schedulers.boundedElastic())
             .block()
     }
 
