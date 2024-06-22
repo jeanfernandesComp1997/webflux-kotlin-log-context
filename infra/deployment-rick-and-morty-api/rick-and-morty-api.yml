@@ -41,7 +41,6 @@ metadata:
   labels:
     app: rick-and-morty-api
 spec:
-  type: NodePort
   ports:
     - name: http-traffic
       port: 8080
@@ -74,22 +73,3 @@ spec:
     name: rick-and-morty-api
   minReplicas: 1
   maxReplicas: 10
-
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: rick-and-morty-api-ingress
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: rick-and-morty-api.example
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: rick-and-morty-api
-                port:
-                  number: 8080
