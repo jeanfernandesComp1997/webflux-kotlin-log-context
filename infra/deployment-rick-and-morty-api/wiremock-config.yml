@@ -9,7 +9,7 @@ data:
           {
             "request": {
               "method": "GET",
-              "url": "/api/character/([0-9]*)"
+              "urlPathMatching": "/api/character/^(.*)"
             },
             "response": {
               "status": 200,
