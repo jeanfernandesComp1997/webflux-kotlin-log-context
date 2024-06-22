@@ -8,20 +8,33 @@ export const options = {
 //export const options = {
 //  scenarios: {
 //    contacts: {
-//      executor: 'ramping-vus',
-//      preAllocatedVUs: 10,
-//      startVUs: 3,
-//      maxVus: 10
+//      executor: 'ramping-arrival-rate',
+//      preAllocatedVUs: 30,
+//      timeUnit: '1s',
+//      startRate: 10,
 //      stages: [
-//        { target: 20, duration: '30s' }, // linearly go from 3 VUs to 20 VUs for 30s
-//        { target: 100, duration: '0' }, // instantly jump to 100 VUs
-//        { target: 100, duration: '10m' }, // continue with 100 VUs for 10 minutes
+//        { target: 200, duration: '30s' }, // linearly go from 50 iters/s to 200 iters/s for 30s
+//        { target: 500, duration: '0' }, // instantly jump to 500 iters/s
+//        { target: 500, duration: '5m' }, // continue with 500 iters/s for 10 minutes
 //      ],
+//    },
+//  },
+//};
+//
+//export const options = {
+//  scenarios: {
+//    constant_request_rate: {
+//      executor: 'constant-arrival-rate',
+//      rate: 1000,
+//      timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
+//      duration: '300s',
+//      preAllocatedVUs: 100, // how large the initial pool of VUs would be
+//      maxVUs: 200, // if the preAllocatedVUs are not enough, we can initialize more
 //    },
 //  },
 //};
 
 export default function () {
-let res = http.get('http://webflux-kotlin-log-context.example/characters/suspend/7');
+let res = http.get('http://webflux-kotlin-log-context.example/characters/7');
 check(res, { 'status was 200': (r) => r.status == 200 });
 }

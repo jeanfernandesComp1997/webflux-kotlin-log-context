@@ -1,17 +1,17 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-	id("org.springframework.boot") version "3.2.4"
-	id("io.spring.dependency-management") version "1.1.4"
-	kotlin("jvm") version "1.9.23"
-	kotlin("plugin.spring") version "1.9.23"
+	id("org.springframework.boot") version "3.2.7"
+	id("io.spring.dependency-management") version "1.1.5"
+	kotlin("jvm") version "2.0.0"
+	kotlin("plugin.spring") version "2.0.0"
 }
 
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_21
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
 }
 
 repositories {
@@ -25,19 +25,21 @@ dependencies {
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm")
 	implementation("io.micrometer:micrometer-tracing")
 	implementation("io.micrometer:micrometer-tracing-bridge-otel")
+	implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
 
+	compileOnly("org.projectlombok:lombok:1.18.32")
 	runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 }
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs += "-Xjsr305=strict"
-		jvmTarget = "21"
+kotlin {
+	compilerOptions {
+		freeCompilerArgs.addAll("-Xjsr305=strict")
 	}
 }
 

@@ -3,6 +3,9 @@ spring:
     name: logging-context-sample
   reactor:
     context-propagation: auto
+  threads:
+    virtual:
+      enabled: true
 client:
   base-url: http://rick-and-morty-api:8080/api
   #base-url: https://rickandmortyapi.com/api
