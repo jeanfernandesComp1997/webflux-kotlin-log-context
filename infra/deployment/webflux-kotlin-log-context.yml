@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: jeanfernandes1997/webflux-kotlin-log-context:0.0.6
+          image: jeanfernandes1997/webflux-kotlin-log-context:0.0.7
           ports:
             - containerPort: 8080
               name: ws-port
@@ -67,6 +67,19 @@ spec:
     name: webflux-kotlin-log-context
   minReplicas: 3
   maxReplicas: 10
+  metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 70
+          type: Utilization
+      type: Resource
+    - resource:
+        name: memory
+        target:
+          averageUtilization: 80
+          type: Utilization
+      type: Resource
 
 ---
 apiVersion: networking.k8s.io/v1
