@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: jeanfernandes1997/webflux-kotlin-log-context:0.0.5
+          image: jeanfernandes1997/webflux-kotlin-log-context:0.0.6
           ports:
             - containerPort: 8080
               name: ws-port
