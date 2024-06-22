@@ -21,11 +21,11 @@ spec:
               name: ws-port
           resources:
             requests:
-              cpu: "400m"
-              memory: 512Mi
+              cpu: "550m"
+              memory: 500Mi
             limits:
-              cpu: "700m"
-              memory: 700Mi
+              cpu: "720m"
+              memory: 600Mi
 ---
 apiVersion: v1
 kind: Service
