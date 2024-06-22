@@ -4,7 +4,8 @@ spring:
   reactor:
     context-propagation: auto
 client:
-  base-url: https://rickandmortyapi.com/api
+  base-url: http://rick-and-morty-api:8080/api
+  #base-url: https://rickandmortyapi.com/api
 
 logging:
   pattern:
