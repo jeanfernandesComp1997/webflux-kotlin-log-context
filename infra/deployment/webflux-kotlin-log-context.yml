@@ -67,3 +67,22 @@ spec:
     name: webflux-kotlin-log-context
   minReplicas: 3
   maxReplicas: 10
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webflux-kotlin-log-context-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: webflux-kotlin-log-context.example
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: webflux-kotlin-log-context
+                port:
+                  number: 8080
