@@ -7,7 +7,6 @@ data:
       {
         "mappings": [
           {
-            "id": "da5735a6-b6cc-45aa-8256-fb88b5670610",
             "request": {
               "method": "GET",
               "url": "/api/character/^(.*)"
