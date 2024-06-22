@@ -39,6 +39,10 @@ class CharacterService(
         return@coroutineScope character.await() ?: Any()
     }
 
+    suspend fun retrieveCharacterSuspend(id: String): Any {
+        return callApi(id)
+    }
+
     private suspend fun callApi(id: String): Any {
         return client
             .get()

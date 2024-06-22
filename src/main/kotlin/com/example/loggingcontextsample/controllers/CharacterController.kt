@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
+import java.util.UUID
 
 @RestController
 @RequestMapping("characters")
@@ -29,6 +30,14 @@ class CharacterController(
 
         logger.info("Building response")
         return ResponseEntity.ok(ResponseBody(userId = userKey, data = character))
+    }
+
+    @GetMapping("suspend/{id}")
+    suspend fun retrieveCharacterByIdSuspend(@PathVariable id: String): ResponseEntity<ResponseBody> {
+        logger.info("Suspend request received, search character id: $id")
+        val character = characterService.retrieveCharacterSuspend(id)
+        logger.info("Building suspend response")
+        return ResponseEntity.ok(ResponseBody(userId = UUID.randomUUID().toString(), data = character))
     }
 
     private suspend fun retrieveUserKey(): String? {
